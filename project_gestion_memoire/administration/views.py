@@ -56,9 +56,9 @@ class FiliereDetail(generics.RetrieveUpdateDestroyAPIView):
 class EnseignentList(generics.ListCreateAPIView):
     queryset = Enseignent.objects.all()
     serializer_class = EnseignentSerializer
-    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
+    filter_backends = [filters.SearchFilter]
     filterset_fields = ['departement']
-    search_fields = ['nom']
+    search_fields = ['nom','prenom','cni']
     
 class EnseignentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Enseignent.objects.all()
