@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'administration.apps.AppConfig',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'project_gestion_memoire.urls'
@@ -75,9 +79,11 @@ WSGI_APPLICATION = 'project_gestion_memoire.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql', # on utilise l'adaptateur mysql
+        'NAME': 'gestion_memoire', # le nom de notre base de donnees creee precedemment
+        'USER': 'root', # attention : remplacez par votre nom d'utilisateur
+        'PASSWORD': '',
+    },
 }
 
 
