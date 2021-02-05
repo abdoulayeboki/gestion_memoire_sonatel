@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from administration.views import EtudiantList, EtudiantDetail,SpecialiteList,SpecialiteDetail,EnseignentDetail,ClasseList,EnseignentList, ClasseDetail,FiliereList,FiliereDetail
+from administration.views import EtudiantList, EtudiantDetail,SpecialiteList,DepartementList,DepartementDetail,SpecialiteDetail,EnseignentDetail,ClasseList,EnseignentList, ClasseDetail,FiliereList,FiliereDetail
+
 
 urlpatterns = [
     path('etudiants/', EtudiantList.as_view()),
@@ -13,5 +14,8 @@ urlpatterns = [
     path('filieres/<int:pk>/', FiliereDetail.as_view()),
     path('enseignents/', EnseignentList.as_view()),
     path('enseignents/<int:pk>/', EnseignentDetail.as_view()),
+    path('departements/', DepartementList.as_view()),
+    path('departements/<int:pk>/', DepartementDetail.as_view(), name="departements_detail"),
+
     
 ]
