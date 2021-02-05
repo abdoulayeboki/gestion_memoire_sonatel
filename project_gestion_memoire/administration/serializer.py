@@ -2,14 +2,19 @@ from rest_framework import serializers
 from administration.models import Etudiant, Promotion, Specialite, Classe, Filiere,Enseignent,Departement
 from django.contrib.auth.models import User
 
+class DepartementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Departement
+        fields = ['id', 'nom','code']
 class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
         fields = ['id', 'code', 'nom']
 class FiliereSerializer(serializers.ModelSerializer):
+    departement =  DepartementSerializer(read_only=True)
     class Meta:
         model = Filiere
-        fields = ['code', 'nom']
+        fields = ['code', 'nom','departement']
 class SpecialiteSerializer(serializers.ModelSerializer):
     filiere = FiliereSerializer()
     class Meta:
@@ -26,10 +31,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etudiant
         fields = ['id', 'nom', 'prenom', 'ine','promotion','classe']
-class DepartementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Departement
-        fields = ['id', 'nom','code']
+
 class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
     class Meta:
