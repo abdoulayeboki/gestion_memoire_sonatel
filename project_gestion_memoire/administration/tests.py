@@ -1,36 +1,5 @@
 from django.test import TestCase
 
-# Create your tests here.
-from rest_framework.test import RequestsClient
-
-client = RequestsClient()
-
-# on test l'application sur la classe etudiant
-response = client.get('http://127.0.0.1:8000/etudiants/')
-assert response.status_code == 200
-
-response = client.get('http://127.0.0.1:8000/etudiants/1/')
-assert response.status_code == 200
-
-
-# on test l'application sur la classe enseignent
-response = client.get('http://127.0.0.1:8000/enseignents/')
-assert response.status_code == 200
-
-response = client.get('http://127.0.0.1:8000/enseignents/1/')
-assert response.status_code == 200
-
-# on test l'application sur la classe specialites
-response = client.get('http://127.0.0.1:8000/specialites/')
-assert response.status_code == 200
-
-response = client.get('http://127.0.0.1:8000/specialites/1/')
-assert response.status_code == 200
-
-# tester le departement
-response = client.get('http://127.0.0.1:8000/departements/34/')
-assert response.status_code == 404
-
 import json
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -75,4 +44,4 @@ class EtudiantTestCase(APITestCase):
     def test_listing_etudiant(self):
         response = self.client.get('/etudiants/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)   
-        
+
