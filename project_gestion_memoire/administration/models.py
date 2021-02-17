@@ -57,6 +57,8 @@ class Etudiant(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     ine = models.CharField(max_length=7)
+    telephon = models.CharField(max_length=18,default=None)
+    email = models.CharField(max_length=18,default=None)
     promotion = models.ForeignKey(Promotion, related_name="etudiants",on_delete=models.CASCADE)
     classe = models.ForeignKey(Classe, related_name="etudiants",on_delete=models.CASCADE, default=None)
 

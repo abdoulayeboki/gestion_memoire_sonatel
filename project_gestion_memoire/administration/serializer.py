@@ -14,7 +14,7 @@ class FiliereSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
     class Meta:
         model = Filiere
-        fields = ['code', 'nom','departement']
+        fields = ['id','code', 'nom','departement']
 class SpecialiteSerializer(serializers.ModelSerializer):
     filiere = FiliereSerializer()
     class Meta:
@@ -30,7 +30,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
     classe = ClasseSerializer()
     class Meta:
         model = Etudiant
-        fields = ['id', 'nom', 'prenom', 'ine','promotion','classe']
+        fields = ['id', 'nom', 'prenom','telephon','email', 'ine','promotion','classe']
 
 class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
