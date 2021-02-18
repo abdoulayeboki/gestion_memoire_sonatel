@@ -36,4 +36,4 @@ class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
     class Meta:
         model = Enseignent
-        fields = ['id', 'nom', 'prenom', 'cni','departement']
+        fields = ['id', 'nom', 'prenom','grade','specialite','telephon','email', 'cni','departement']

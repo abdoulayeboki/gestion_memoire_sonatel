@@ -1,7 +1,7 @@
 
 # Create your views here.
-from administration.models import  Etudiant,Specialite, Classe,Filiere,Enseignent,Departement
-from administration.serializer import EtudiantSerializer, SpecialiteSerializer,DepartementSerializer, ClasseSerializer,FiliereSerializer,EnseignentSerializer
+from administration.models import  Etudiant,Specialite, Classe,Filiere,Enseignent,Departement, Promotion
+from administration.serializer import EtudiantSerializer, SpecialiteSerializer,DepartementSerializer,PromotionSerializer, ClasseSerializer,FiliereSerializer,EnseignentSerializer
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -72,4 +72,12 @@ class DepartementList(generics.ListCreateAPIView):
 class DepartementDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Departement.objects.all()
     serializer_class = DepartementSerializer
+
+# view Promotion   
+class PromotionList(generics.ListCreateAPIView):
+    queryset = Promotion.objects.all()
+    serializer_class = PromotionSerializer
     
+class PromotionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Promotion.objects.all()
+    serializer_class = PromotionSerializer
