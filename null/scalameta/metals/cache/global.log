@@ -83,3 +83,37 @@
   bloop-port=default
 )[0m
 [0m2021.02.17 14:17:45 INFO  logging to file C:\Users\Abdoulaye SARR\Documents\Python cours\gestion_memoire\.metals\metals.log[0m
+[0m2021.02.18 08:15:14 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at c:\Users\Abdoulaye SARR\Documents\Python cours\gestion_memoire\null\scalameta\metals\cache\lsp.trace.json[0m
+[0m2021.02.18 08:15:23 INFO  Starting Metals server with configuration: MetalsServerConfig(
+  glob-syntax=GlobSyntaxConfig(vscode),
+  status-bar=StatusBarConfig(off),
+  open-files-on-rename=false,
+  rename-file-threshold=300,
+  slow-task=SlowTaskConfig(off),
+  execute-client-command=ExecuteClientCommandConfig(off),
+  compilers=PresentationCompilerConfigImpl(false,Some(editor.action.triggerParameterHints),Some(editor.action.triggerSuggest),Map(scala/collection/mutable/ -> mutable., java/util/ -> ju.),Unicode,true,true,true,true,false,true,true,true,scala.meta.internal.pc.PresentationCompilerConfigImpl$$$Lambda$76/0x00000001001ce840@4bbf6d0e,20,SECONDS),
+  http=false,
+  input-box=false,
+  ask-to-reconnect=false,
+  icons=vscode,
+  statistics=StatisticsConfig(default),
+  bloop-port=default
+)[0m
+[0m2021.02.18 08:15:25 INFO  logging to file C:\Users\Abdoulaye SARR\Documents\Python cours\gestion_memoire\.metals\metals.log[0m
+[0m2021.02.18 20:38:22 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at c:\Users\Abdoulaye SARR\Documents\Python cours\gestion_memoire\null\scalameta\metals\cache\lsp.trace.json[0m
+[0m2021.02.18 20:38:39 INFO  Starting Metals server with configuration: MetalsServerConfig(
+  glob-syntax=GlobSyntaxConfig(vscode),
+  status-bar=StatusBarConfig(off),
+  open-files-on-rename=false,
+  rename-file-threshold=300,
+  slow-task=SlowTaskConfig(off),
+  execute-client-command=ExecuteClientCommandConfig(off),
+  compilers=PresentationCompilerConfigImpl(false,Some(editor.action.triggerParameterHints),Some(editor.action.triggerSuggest),Map(scala/collection/mutable/ -> mutable., java/util/ -> ju.),Unicode,true,true,true,true,false,true,true,true,scala.meta.internal.pc.PresentationCompilerConfigImpl$$$Lambda$76/0x00000001001ce840@4bbf6d0e,20,SECONDS),
+  http=false,
+  input-box=false,
+  ask-to-reconnect=false,
+  icons=vscode,
+  statistics=StatisticsConfig(default),
+  bloop-port=default
+)[0m
+[0m2021.02.18 20:38:42 INFO  logging to file C:\Users\Abdoulaye SARR\Documents\Python cours\gestion_memoire\.metals\metals.log[0m

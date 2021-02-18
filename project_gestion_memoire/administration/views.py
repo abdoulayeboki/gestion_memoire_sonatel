@@ -33,7 +33,7 @@ class ClasseList(generics.ListCreateAPIView):
     serializer_class = ClasseSerializer
     filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     filterset_fields = ['specialite','specialite__filiere']
-    search_fields = ['nom']
+    search_fields = ['code','anneeScolaire']
     
 class ClasseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Classe.objects.all()
@@ -46,7 +46,7 @@ class FiliereList(generics.ListCreateAPIView):
     serializer_class = FiliereSerializer
     filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     filterset_fields = ['departement']
-    search_fields = ['nom']
+    search_fields = ['nom','code']
     
 class FiliereDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Filiere.objects.all()
@@ -56,7 +56,7 @@ class FiliereDetail(generics.RetrieveUpdateDestroyAPIView):
 class EnseignentList(generics.ListCreateAPIView):
     queryset = Enseignent.objects.all()
     serializer_class = EnseignentSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     filterset_fields = ['departement']
     search_fields = ['nom','prenom','cni']
     
@@ -68,6 +68,8 @@ class EnseignentDetail(generics.RetrieveUpdateDestroyAPIView):
 class DepartementList(generics.ListCreateAPIView):
     queryset = Departement.objects.all()
     serializer_class = DepartementSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nom','code']
     
 class DepartementDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Departement.objects.all()
