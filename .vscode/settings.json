@@ -1,6 +1,0 @@
-{
-    "files.watcherExclude": {
-        "**/target": true
-    },
-    "python.pythonPath": "env\\Scripts\\python.exe"
-}
