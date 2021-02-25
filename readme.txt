@@ -1,7 +1,11 @@
 ------------------------------------------------------------------------------------------------------------------------
 telecharger les dependance à l'aide de cette commande 
+    creer environnement virtuel 
+       python -m venv env
+     Activier l'environnement
+        env\Scripts\activate.bat
 
-     pip install requirements.txt
+     pip install -r requirements.txt
 ------------------------------------------------------------------------------------------------------------------------
 Creer la base de donnée nommée:
      gestion_memoire
@@ -9,7 +13,7 @@ Creer la base de donnée nommée:
 Demarrer l'application en allant dans le dossier project_gestion_memoire grace à la ligne de commande avec:
 
      cd project_gestion_memoire
-     python manage.py runserve
+     python manage.py runserver
 
 ------------------------------------------------------------------------------------------------------------------------
 les lien utils

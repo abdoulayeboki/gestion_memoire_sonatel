@@ -11,11 +11,11 @@ class DepartementTestCase(APITestCase):
 
     def test_add_departement(self):
         data = {'nom':'pc', 'code':'pc'}
-        response = self.client.post('/departements/',data)
+        response = self.client.post('/administration/departements/',data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
     def test_listing_departement(self):
-        response = self.client.get('/departements/')
+        response = self.client.get('/administration/departements/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # def test_retrieve_departement(self):
@@ -24,24 +24,24 @@ class DepartementTestCase(APITestCase):
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 class FiliereTestCase(APITestCase):
     def test_listing_filiere(self):
-        response = self.client.get('/filieres/')
+        response = self.client.get('/administration/filieres/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 class EnseignentTestCase(APITestCase):
     def test_listing_enseignent(self):
-        response = self.client.get('/enseignents/')
+        response = self.client.get('/administration/enseignents/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 class SpecialiteTestCase(APITestCase):
     def test_listing_specialite(self):
-        response = self.client.get('/specialites/')
+        response = self.client.get('/administration/specialites/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 class ClasseTestCase(APITestCase):
     def test_listing_classe(self):
-        response = self.client.get('/classes/')
+        response = self.client.get('/administration/classes/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
       
 class EtudiantTestCase(APITestCase):
     def test_listing_etudiant(self):
-        response = self.client.get('/etudiants/')
+        response = self.client.get('/administration/etudiants/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)   
 
