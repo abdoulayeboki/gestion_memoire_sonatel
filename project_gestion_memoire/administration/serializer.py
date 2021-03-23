@@ -2,7 +2,8 @@ from rest_framework import serializers
 from administration.models import Etudiant, Promotion, Specialite, Classe, Filiere,Enseignent,Departement
 from django.contrib.auth.models import User
 
-class DepartementSerializer(serializers.ModelSerializer):
+class DepartementSerializer(serializers.HyperlinkedModelSerializer):
+    # departement = serializers.HyperlinkedIdentityField(view_name='departements_detail', format='html')
     class Meta:
         model = Departement
         fields = ['id', 'nom','code']

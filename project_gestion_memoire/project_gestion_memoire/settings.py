@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'corsheaders',
+    'sujet_module.apps.SujetModuleConfig',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
