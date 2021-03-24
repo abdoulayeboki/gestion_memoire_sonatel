@@ -38,6 +38,8 @@ class EtudiantSerializer(serializers.ModelSerializer):
 
 class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
+    sujetsPostuler = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujets_detail')
+    # sujetsPostuler = serializers.IntegerField(source ="sujet.id", read_only=True)
     class Meta:
         model = Enseignent
-        fields = ['id', 'nom', 'prenom','grade','specialite','telephon','email', 'cni','departement']
+        fields = '__all__'

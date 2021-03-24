@@ -21,7 +21,7 @@ class Sujet(models.Model):
     etatSujet = models.CharField(max_length=10,
     choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
     postulants = models.ManyToManyField(Etudiant, through='EtudiantPostuler',related_name="sujetsPostuler")
-
+    EnseignantPostulant = models.ManyToManyField(Enseignent, through='EnseignantPostuler',related_name="sujetsPostuler")
     def __str__(self):
         return self.titre
 
@@ -32,10 +32,16 @@ class EtudiantPostuler(models.Model):
     etudiant = models.ForeignKey(Etudiant,on_delete=models.CASCADE)
     sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together =['etudiant','sujet']
+
     
 
-# class EnseignantPostuler(models.Model):
-#     datePostuler = models.DateTimeField(auto_now_add=True)
-#     motivatin = models.TextField()
-#     enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE,related_name="sujetsPostuler")
-#     sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE,related_name="enseignantsPostuler")
+class EnseignantPostuler(models.Model):
+    datePostuler = models.DateTimeField(auto_now_add=True)
+    motivation = models.TextField()
+    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together =['enseignant','sujet']

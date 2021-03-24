@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from .models import Sujet, EtudiantPostuler
-from .serializer import SujetSerializer, UserSerializer, EtudiantPostulerSerializer
+from .models import Sujet, EtudiantPostuler,EnseignantPostuler
+from .serializer import SujetSerializer, UserSerializer, EtudiantPostulerSerializer,EnseignantPostulerSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
@@ -33,7 +33,13 @@ class EtudiantPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EtudiantPostuler.objects.all()
     serializer_class = EtudiantPostulerSerializer
 
-
+# view EnseignentPostuler   
+class EnseignantPostulerList(generics.ListCreateAPIView):
+    queryset = EnseignantPostuler.objects.all()
+    serializer_class = EnseignantPostulerSerializer
+class EnseignantPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EnseignantPostuler.objects.all()
+    serializer_class = EnseignantPostulerSerializer
 
 
 

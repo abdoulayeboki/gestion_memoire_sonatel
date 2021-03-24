@@ -1,14 +1,12 @@
 from rest_framework import serializers
-from sujet_module.models import Sujet
+from sujet_module.models import Sujet, EnseignantPostuler,EtudiantPostuler
 from django.contrib.auth.models import User
-from sujet_module.models import EtudiantPostuler
-# from administration.serializer import EtudiantSerializer
+from administration.models import Etudiant
 class SujetSerializer(serializers.ModelSerializer):
-    postulants = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='etudiants_detail')
-
+    # postulants = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='etudiants_detail')
     class Meta:
         model = Sujet
-        fields = ['id', 'titre','description','etatSujet','createdDate','owner','postulants']
+        fields = '__all__'
 class UserSerializer(serializers.ModelSerializer):
     sujets = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Sujet.objects.all())
@@ -17,10 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'sujets')
 class EtudiantPostulerSerializer(serializers.ModelSerializer):
-    # etudiant = serializers.HyperlinkedRelatedField( read_only=True,view_name='etudiants_detail')
-    # sujet = serializers.HyperlinkedRelatedField( read_only=True,view_name='sujets_detail')
-    etudiant = serializers.IntegerField(source="etudiant.id",read_only=True)
-    sujet = serializers.IntegerField(source="sujet.id",read_only=True)
     class Meta:
         model = EtudiantPostuler
+        fields = '__all__' 
+
+class EnseignantPostulerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EnseignantPostuler
         fields = '__all__' 
