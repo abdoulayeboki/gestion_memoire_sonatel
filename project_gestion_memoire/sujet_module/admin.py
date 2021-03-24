@@ -4,9 +4,13 @@ from django.contrib import admin
 from django.contrib import admin
 
 # Register your models here.
-from sujet_module.models import  Sujet
+from .models import  Sujet
+from sujet_module.models import EtudiantPostuler
 
 class SujetAdmin(admin.ModelAdmin):
-    #  exclude =('owner',)
-     list_display   = ('titre', 'description','etatSujet','owner','createdDate')
+    list_display   = ('titre', 'description','etatSujet','owner','createdDate')
 admin.site.register(Sujet, SujetAdmin)
+
+class EtudiantPostulerAdmin(admin.ModelAdmin):
+    list_display   = ('motivation', 'cv','datePostuler')
+admin.site.register(EtudiantPostuler, EtudiantPostulerAdmin)

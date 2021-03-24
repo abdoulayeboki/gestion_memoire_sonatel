@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from administration.models import Etudiant, Promotion, Specialite, Classe, Filiere,Enseignent,Departement
 from django.contrib.auth.models import User
+# from sujet_module.serializer import SujetSerializer
+# from sujet_module.serializer import EtudiantPostulerSerializer
 
 class DepartementSerializer(serializers.HyperlinkedModelSerializer):
     # departement = serializers.HyperlinkedIdentityField(view_name='departements_detail', format='html')
@@ -28,10 +30,11 @@ class ClasseSerializer(serializers.ModelSerializer):
         fields = ['id', 'code', 'specialite','anneeScolaire']
 class EtudiantSerializer(serializers.ModelSerializer):
     promotion =  PromotionSerializer(read_only=True)
+    sujetsPostuler = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujets_detail')
     classe = ClasseSerializer()
     class Meta:
         model = Etudiant
-        fields = ['id', 'nom', 'prenom','telephon','email', 'ine','promotion','classe']
+        fields = ['id', 'nom', 'prenom','telephon','email', 'ine','promotion','classe','sujetsPostuler']
 
 class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
