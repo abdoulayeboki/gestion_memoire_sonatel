@@ -31,14 +31,18 @@ class ClasseSerializer(serializers.ModelSerializer):
 class EtudiantSerializer(serializers.ModelSerializer):
     promotion =  PromotionSerializer(read_only=True)
     sujetsPostuler = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujets_detail')
+    sujetValide = serializers.HyperlinkedRelatedField(read_only=True,view_name='sujet_valide_detail')
+    sujetsAccorde = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujet_accorde_detail')
     classe = ClasseSerializer()
     class Meta:
         model = Etudiant
-        fields = ['id', 'nom', 'prenom','telephon','email', 'ine','promotion','classe','sujetsPostuler']
+        fields = ['id', 'nom', 'prenom','telephon','email', 'ine','promotion','classe','sujetsPostuler','sujetsAccorde','sujetValide']
 
 class EnseignentSerializer(serializers.ModelSerializer):
     departement =  DepartementSerializer(read_only=True)
     sujetsPostuler = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujets_detail')
+    sujetsValide = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujet_valide_detail')
+    sujetsAccorde = serializers.HyperlinkedRelatedField(many=True, read_only=True,view_name='sujet_accorde_detail')
     # sujetsPostuler = serializers.IntegerField(source ="sujet.id", read_only=True)
     class Meta:
         model = Enseignent

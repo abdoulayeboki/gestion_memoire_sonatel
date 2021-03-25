@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sujet_module.models import Sujet, EnseignantPostuler,EtudiantPostuler
+from sujet_module.models import Sujet, EnseignantPostuler,EtudiantPostuler,SujetValide,SujetAccorde
 from django.contrib.auth.models import User
 from administration.models import Etudiant
 class SujetSerializer(serializers.ModelSerializer):
@@ -22,4 +22,12 @@ class EtudiantPostulerSerializer(serializers.ModelSerializer):
 class EnseignantPostulerSerializer(serializers.ModelSerializer):
     class Meta:
         model = EnseignantPostuler
+        fields = '__all__' 
+class SujetValideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SujetValide
+        fields = '__all__' 
+class SujetAccordeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SujetAccorde
         fields = '__all__' 

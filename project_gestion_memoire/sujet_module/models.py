@@ -22,8 +22,15 @@ class Sujet(models.Model):
     choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
     postulants = models.ManyToManyField(Etudiant, through='EtudiantPostuler',related_name="sujetsPostuler")
     EnseignantPostulant = models.ManyToManyField(Enseignent, through='EnseignantPostuler',related_name="sujetsPostuler")
+    EnseignantValide = models.ManyToManyField(Enseignent, through='SujetValide',related_name="sujetsValide")
+    EnseignantAccorde = models.ManyToManyField(Enseignent, through='SujetAccorde',related_name="sujetsAccorde")
+
     def __str__(self):
         return self.titre
+    
+    # def save(self,force_update=True, *args, **kwargs):
+    #     self.etatSujet = "VALIDE"
+    #     super().save(*args, **kwargs)  
 
 class EtudiantPostuler(models.Model):
     datePostuler = models.DateTimeField(auto_now_add=True)
@@ -45,3 +52,21 @@ class EnseignantPostuler(models.Model):
 
     class Meta:
         unique_together =['enseignant','sujet']
+
+class SujetValide(models.Model):
+    validateDate = models.DateTimeField(auto_now_add=True)
+    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    etudiant = models.OneToOneField(Etudiant,related_name="sujetValide",on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together =['enseignant','sujet','etudiant']
+
+class SujetAccorde(models.Model):
+    accordeDate = models.DateTimeField(auto_now_add=True)
+    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    etudiant = models.ForeignKey(Etudiant,related_name="sujetsAccorde",on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together =[['enseignant','sujet','etudiant'],['sujet','etudiant'],['enseignant','sujet']]

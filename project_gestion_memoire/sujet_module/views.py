@@ -1,22 +1,22 @@
 from django.shortcuts import render
 
-from .models import Sujet, EtudiantPostuler,EnseignantPostuler
-from .serializer import SujetSerializer, UserSerializer, EtudiantPostulerSerializer,EnseignantPostulerSerializer
+from .models import Sujet, EtudiantPostuler,EnseignantPostuler,SujetValide, SujetAccorde
+from .serializer import SujetSerializer, UserSerializer,SujetAccordeSerializer, SujetValideSerializer,EtudiantPostulerSerializer,EnseignantPostulerSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
 from rest_framework.decorators import api_view # new
 from rest_framework.response import Response # new
-from rest_framework.reverse import reverse # new
+from rest_framework.reverse import reverse 
 # view Sujet   
 class SujetList(generics.ListCreateAPIView):
     # queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
-    def perform_create(self, serializer): # new
-        serializer.save(owner=self.request.user)
+    # def perform_create(self, serializer): 
+    #     Sujet.objects.update(etatSujet="VALIDE")
+        # serializer.save(owner=self.request.user)
     def get_queryset(self):
         user = self.request.user
-        # return Sujet.objects.with_counts()
         return Sujet.objects.filter(owner=user)
 
     
@@ -40,7 +40,22 @@ class EnseignantPostulerList(generics.ListCreateAPIView):
 class EnseignantPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EnseignantPostuler.objects.all()
     serializer_class = EnseignantPostulerSerializer
+    
+# view SujetValide   
+class SujetValideList(generics.ListCreateAPIView):
+    queryset = SujetValide.objects.all()
+    serializer_class = SujetValideSerializer
+class SujetValideDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SujetValide.objects.all()
+    serializer_class = SujetValideSerializer
 
+# view SujetAccorde 
+class SujetAccordeList(generics.ListCreateAPIView):
+    queryset = SujetAccorde.objects.all()
+    serializer_class = SujetAccordeSerializer
+class SujetAccordeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SujetAccorde.objects.all()
+    serializer_class = SujetAccordeSerializer
 
 
 class UserList(generics.ListAPIView): # new
@@ -51,6 +66,8 @@ class UserList(generics.ListAPIView): # new
 class UserDetail(generics.RetrieveAPIView): # new
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
+# l'url par defaut
 @api_view(['GET']) # new
 def api_root(request, format=None):
     return Response({
