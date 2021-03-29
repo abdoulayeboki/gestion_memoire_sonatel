@@ -8,16 +8,20 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view # new
 from rest_framework.response import Response # new
 from rest_framework.reverse import reverse 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
+from coreapi.auth import TokenAuthentication
+
 # view Sujet   
 class SujetList(generics.ListCreateAPIView):
-    # queryset = Sujet.objects.all()
+    queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
-    # def perform_create(self, serializer): 
-    #     Sujet.objects.update(etatSujet="VALIDE")
-        # serializer.save(owner=self.request.user)
-    def get_queryset(self):
-        user = self.request.user
-        return Sujet.objects.filter(owner=user)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['etatSujet','owner']
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Sujet.objects.filter(owner=user)
 
     
 class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
