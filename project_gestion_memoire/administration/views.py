@@ -83,3 +83,4 @@ class PromotionList(generics.ListCreateAPIView):
 class PromotionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Promotion.objects.all()
     serializer_class = PromotionSerializer
+
