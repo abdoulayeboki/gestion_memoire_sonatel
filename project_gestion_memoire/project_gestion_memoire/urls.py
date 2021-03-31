@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from .views import UserDetail, UserList
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -19,6 +20,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('users/', UserList.as_view()), # new
+    path('users/<int:pk>/', UserDetail.as_view()), 
     path('administration/', include('administration.urls')),
     path('', include('sujet_module.urls')),
     path('admin/', admin.site.urls),
