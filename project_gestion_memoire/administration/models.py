@@ -1,23 +1,40 @@
 from django.db import models
-
+from enum import Enum
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Departement(models.Model):
     code = models.CharField(max_length=25,unique=True)
     nom = models.CharField(max_length=100, unique=True)
-    
-    
 
     def __str__(self):
         return self.nom
-class Enseignent(models.Model):
+class ProfilEnumeration(Enum):
+    ETUDIANT = "ETUDIANT"
+    ENSEIGNANT = "ENSEIGNANT"
+    AUTRE  = "AUTRE"
+class Personnel(User):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     cni = models.CharField(max_length=20, unique=True)
+    telephon = models.CharField(max_length=18,default=None)
+    # email = models.CharField(max_length=100,default=None)
+    profil = models.CharField(max_length=20,
+    choices= [(tag.value, tag.value) for tag in ProfilEnumeration], default="AUTRE")
+    # user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="personnel")
+    def save(self, *args, **kwargs):
+        self.username = self.cni
+        self.first_name = self.prenom
+        self.last_name = self.nom
+        self.password = self.nom
+        super().save(*args, **kwargs)  
+    class Meta:
+        unique_together = ['cni']
+    def __str__(self):
+        return self.nom
+class Enseignent(Personnel):
     grade = models.CharField(max_length=100)
     specialite= models.CharField(max_length=100)
-    telephon = models.CharField(max_length=18,default=None)
-    email = models.CharField(max_length=100,default=None)
     departement = models.ForeignKey(Departement, related_name="professeurs",on_delete=models.CASCADE)
 
     class Meta:
@@ -89,15 +106,13 @@ class Classe(models.Model):
     def __str__(self):
         return "%s   %s"% (self.specialite, self.anneeScolaire)
 
-class Etudiant(models.Model):
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
+class Etudiant(Personnel):
     ine = models.CharField(max_length=7, unique=True)
-    telephon = models.CharField(max_length=18,default=None)
-    email = models.CharField(max_length=100,default=None)
     promotion = models.ForeignKey(Promotion, related_name="etudiants",on_delete=models.CASCADE)
     classe = models.ForeignKey(Classe, related_name="etudiants",on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.ine
 
+    class Meta:
+        ordering: ['ine']

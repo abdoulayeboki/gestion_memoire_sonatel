@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from .models import Sujet, EtudiantPostuler,EnseignantPostuler,SujetValide, SujetAccorde
-from .serializer import SujetSerializer, UserSerializer,SujetAccordeSerializer, SujetValideSerializer,EtudiantPostulerSerializer,EnseignantPostulerSerializer
+from .models import Sujet, SujetPostuler, SujetAccorder
+from .serializer import SujetSerializer, UserSerializer,SujetAccorderSerializer,SujetPostulerSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
@@ -28,38 +28,22 @@ class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
 
-# view EtudiantPostuler   
-class EtudiantPostulerList(generics.ListCreateAPIView):
-    queryset = EtudiantPostuler.objects.all()
-    serializer_class = EtudiantPostulerSerializer
+# view SujetPostuler   
+class SujetPostulerList(generics.ListCreateAPIView):
+    queryset = SujetPostuler.objects.all()
+    serializer_class = SujetPostulerSerializer
     
-class EtudiantPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = EtudiantPostuler.objects.all()
-    serializer_class = EtudiantPostulerSerializer
+class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SujetPostuler.objects.all()
+    serializer_class = SujetPostulerSerializer
 
-# view EnseignentPostuler   
-class EnseignantPostulerList(generics.ListCreateAPIView):
-    queryset = EnseignantPostuler.objects.all()
-    serializer_class = EnseignantPostulerSerializer
-class EnseignantPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = EnseignantPostuler.objects.all()
-    serializer_class = EnseignantPostulerSerializer
-    
-# view SujetValide   
-class SujetValideList(generics.ListCreateAPIView):
-    queryset = SujetValide.objects.all()
-    serializer_class = SujetValideSerializer
-class SujetValideDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SujetValide.objects.all()
-    serializer_class = SujetValideSerializer
-
-# view SujetAccorde 
-class SujetAccordeList(generics.ListCreateAPIView):
-    queryset = SujetAccorde.objects.all()
-    serializer_class = SujetAccordeSerializer
-class SujetAccordeDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SujetAccorde.objects.all()
-    serializer_class = SujetAccordeSerializer
+# view SujetAccorder 
+class SujetAccorderList(generics.ListCreateAPIView):
+    queryset = SujetAccorder.objects.all()
+    serializer_class = SujetAccorderSerializer
+class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SujetAccorder.objects.all()
+    serializer_class = SujetAccorderSerializer
 
 
 class UserList(generics.ListAPIView): # new

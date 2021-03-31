@@ -2,7 +2,7 @@ from django.db import models
 from enum import Enum
 from django.contrib.auth.models import User
 from django.db.models.functions import Coalesce
-from administration.models import  Etudiant, Enseignent
+from administration.models import Enseignent, Etudiant, Personnel
 # Create your models here.
 
 class EtatSujetEnumeration(Enum):   # A subclass of Enum
@@ -20,11 +20,7 @@ class Sujet(models.Model):
     owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name="sujets")
     etatSujet = models.CharField(max_length=10,
     choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
-    postulants = models.ManyToManyField(Etudiant, through='EtudiantPostuler',related_name="sujetsPostuler")
-    EnseignantPostulant = models.ManyToManyField(Enseignent, through='EnseignantPostuler',related_name="sujetsPostuler")
-    EnseignantValide = models.ManyToManyField(Enseignent, through='SujetValide',related_name="sujetsValide")
-    EnseignantAccorde = models.ManyToManyField(Enseignent, through='SujetAccorde',related_name="sujetsAccorde")
-
+    
     def __str__(self):
         return self.titre
     
@@ -32,41 +28,25 @@ class Sujet(models.Model):
     #     self.etatSujet = "VALIDE"
     #     super().save(*args, **kwargs)  
 
-class EtudiantPostuler(models.Model):
+class SujetPostuler(models.Model):
     datePostuler = models.DateTimeField(auto_now_add=True)
     motivation = models.TextField()
     cv = models.CharField(max_length=255)
-    etudiant = models.ForeignKey(Etudiant,on_delete=models.CASCADE)
-    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE,related_name="sujetsPostule")
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE,related_name="personnesPostulant")
 
     class Meta:
-        unique_together =['etudiant','sujet']
+        unique_together =['personnel','sujet']
+    def __str__(self):
+        return  self.cv
 
-    
-
-class EnseignantPostuler(models.Model):
-    datePostuler = models.DateTimeField(auto_now_add=True)
-    motivation = models.TextField()
-    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
-    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together =['enseignant','sujet']
-
-class SujetValide(models.Model):
-    validateDate = models.DateTimeField(auto_now_add=True)
-    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
-    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
-    etudiant = models.OneToOneField(Etudiant,related_name="sujetValide",on_delete=models.CASCADE)
+class SujetAccorder(models.Model):
+    dateAccorde = models.DateTimeField(auto_now_add=True)
+    valide = models.BooleanField(default=False)
+    sujetPostuler = models.ForeignKey(SujetPostuler,on_delete=models.CASCADE,related_name="personnesAccorde")
+    personnel = models.ForeignKey(Personnel,related_name="sujetsAccorde",on_delete=models.CASCADE)
 
     class Meta:
-        unique_together =['enseignant','sujet','etudiant']
-
-class SujetAccorde(models.Model):
-    accordeDate = models.DateTimeField(auto_now_add=True)
-    enseignant = models.ForeignKey(Enseignent,on_delete=models.CASCADE)
-    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
-    etudiant = models.ForeignKey(Etudiant,related_name="sujetsAccorde",on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together =[['enseignant','sujet','etudiant'],['sujet','etudiant'],['enseignant','sujet']]
+        unique_together =['sujetPostuler','personnel']
+    def __str__(self):
+        return self.valide

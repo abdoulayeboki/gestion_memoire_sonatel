@@ -5,16 +5,16 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import  Sujet
-from sujet_module.models import EtudiantPostuler,EnseignantPostuler
+from sujet_module.models import  SujetAccorder, SujetPostuler
 
 class SujetAdmin(admin.ModelAdmin):
     list_display   = ('titre', 'description','etatSujet','owner','createdDate')
 admin.site.register(Sujet, SujetAdmin)
 
-class EtudiantPostulerAdmin(admin.ModelAdmin):
-    list_display   = ('motivation', 'cv','datePostuler','etudiant','sujet')
-admin.site.register(EtudiantPostuler, EtudiantPostulerAdmin)
+class SujetPostulerAdmin(admin.ModelAdmin):
+    list_display   = ('motivation', 'cv','datePostuler','personnel','sujet')
+admin.site.register(SujetPostuler, SujetPostulerAdmin)
 
-class EnseignantPostulerAdmin(admin.ModelAdmin):
-    list_display   = ('motivation','datePostuler','enseignant','sujet')
-admin.site.register(EnseignantPostuler, EnseignantPostulerAdmin)
+class SujetAccorderAdmin(admin.ModelAdmin):
+    list_display   = ('dateAccorde','valide','sujetPostuler','personnel')
+admin.site.register(SujetAccorder, SujetAccorderAdmin)
