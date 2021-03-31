@@ -8,7 +8,7 @@ from .models import  Sujet
 from sujet_module.models import  SujetAccorder, SujetPostuler
 
 class SujetAdmin(admin.ModelAdmin):
-    list_display   = ('titre', 'description','etatSujet','owner','createdDate')
+    list_display   = ('titre', 'description','etatSujet','personnel','createdDate')
 admin.site.register(Sujet, SujetAdmin)
 
 class SujetPostulerAdmin(admin.ModelAdmin):

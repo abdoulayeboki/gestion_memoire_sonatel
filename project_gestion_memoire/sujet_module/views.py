@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from .models import Sujet, SujetPostuler, SujetAccorder
-from .serializer import SujetSerializer, UserSerializer,SujetAccorderSerializer,SujetPostulerSerializer
+from .serializer import SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
@@ -46,18 +46,3 @@ class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SujetAccorderSerializer
 
 
-class UserList(generics.ListAPIView): # new
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView): # new
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    
-# l'url par defaut
-@api_view(['GET']) # new
-def api_root(request, format=None):
-    return Response({
-        'sujet': reverse('sujets_list', request=request, format=format),
-    })

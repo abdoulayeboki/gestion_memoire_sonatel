@@ -4,14 +4,14 @@ from django.contrib import admin
 from administration.models import  Etudiant, Promotion,Departement,Filiere,Specialite,Classe,Enseignent
 
 class EtudiantAdmin(admin.ModelAdmin):
-     fields = (('nom', 'prenom'),('telephon','email'),('ine','classe','promotion'),('cni','profil'))
+     fields = (('nom', 'prenom'),('telephon','email'),('ine','classe','promotion'),('cni','profil','user'))
      list_display   = ('nom', 'prenom','telephon','email', 'ine','classe')
      list_filter    = ('classe','classe__specialite','classe__specialite__filiere')
      search_fields  = ('ine', 'nom', 'prenom')
 class EnseignentAdmin(admin.ModelAdmin):
      fieldsets = (
         ("Information Personnelle", {
-            'fields': ('nom', 'prenom', 'cni','profil')
+            'fields': ('nom', 'prenom', 'cni','profil','user')
         }),
         ('Information Suplémentaire', {
             'classes': ('wide ', 'extrapretty'),

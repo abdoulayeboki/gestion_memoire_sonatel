@@ -7,13 +7,7 @@ class SujetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sujet
         fields = '__all__'
-class UserSerializer(serializers.ModelSerializer):
-    sujets = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Sujet.objects.all())
 
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'sujets')
 class SujetPostulerSerializer(serializers.ModelSerializer):
     class Meta:
         model = SujetPostuler

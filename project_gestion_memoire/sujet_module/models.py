@@ -17,24 +17,22 @@ class Sujet(models.Model):
     titre = models.CharField(max_length=255)
     description = models.TextField()
     createdDate = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name="sujets")
+    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE,related_name="mesSujets")
     etatSujet = models.CharField(max_length=10,
     choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
-    
+    personnesPostulant = models.ManyToManyField(Personnel, through='SujetPostuler',related_name="sujetsPostuler")
+
     def __str__(self):
         return self.titre
-    
-    # def save(self,force_update=True, *args, **kwargs):
-    #     self.etatSujet = "VALIDE"
-    #     super().save(*args, **kwargs)  
+
 
 class SujetPostuler(models.Model):
     datePostuler = models.DateTimeField(auto_now_add=True)
     motivation = models.TextField()
     cv = models.CharField(max_length=255)
-    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE,related_name="sujetsPostule")
-    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE,related_name="personnesPostulant")
-
+    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE)
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    personnesAccorde = models.ManyToManyField(Personnel,through='SujetAccorder', related_name="sujetsAccorder")
     class Meta:
         unique_together =['personnel','sujet']
     def __str__(self):
@@ -43,8 +41,8 @@ class SujetPostuler(models.Model):
 class SujetAccorder(models.Model):
     dateAccorde = models.DateTimeField(auto_now_add=True)
     valide = models.BooleanField(default=False)
-    sujetPostuler = models.ForeignKey(SujetPostuler,on_delete=models.CASCADE,related_name="personnesAccorde")
-    personnel = models.ForeignKey(Personnel,related_name="sujetsAccorde",on_delete=models.CASCADE)
+    sujetPostuler = models.ForeignKey(SujetPostuler,on_delete=models.CASCADE)
+    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE)
 
     class Meta:
         unique_together =['sujetPostuler','personnel']

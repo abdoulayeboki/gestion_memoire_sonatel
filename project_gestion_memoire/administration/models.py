@@ -13,23 +13,18 @@ class ProfilEnumeration(Enum):
     ETUDIANT = "ETUDIANT"
     ENSEIGNANT = "ENSEIGNANT"
     AUTRE  = "AUTRE"
-class Personnel(User):
+class Personnel(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     cni = models.CharField(max_length=20, unique=True)
     telephon = models.CharField(max_length=18,default=None)
-    # email = models.CharField(max_length=100,default=None)
+    email = models.CharField(max_length=100)
     profil = models.CharField(max_length=20,
     choices= [(tag.value, tag.value) for tag in ProfilEnumeration], default="AUTRE")
-    # user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="personnel")
-    def save(self, *args, **kwargs):
-        self.username = self.cni
-        self.first_name = self.prenom
-        self.last_name = self.nom
-        self.password = self.nom
-        super().save(*args, **kwargs)  
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="personnel",null=True, unique=True)
+
     class Meta:
-        unique_together = ['cni']
+        unique_together = [['cni'],['user']]
     def __str__(self):
         return self.nom
 class Enseignent(Personnel):
