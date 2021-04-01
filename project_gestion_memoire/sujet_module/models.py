@@ -57,3 +57,11 @@ class SujetAccorder(models.Model):
         unique_together =['sujet','personnel']
     def __str__(self):
         return self.valide
+    
+    def save(self, *args, **kwargs):
+        sujet = Sujet.objects.get(pk=self.sujet.id)
+        list_idPersonne = sujet.personnelPostuler.values_list("id",flat=True)
+        if self.personnel.id not in list_idPersonne:
+            raise Http404("Imposible! Vous avez n'avez pas postulé à ce sujet")
+        else:
+            super().save(*args, **kwargs)
