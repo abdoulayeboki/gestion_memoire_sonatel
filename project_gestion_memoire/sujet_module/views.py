@@ -18,7 +18,7 @@ class SujetList(generics.ListCreateAPIView):
     queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['etatSujet','owner']
+    filterset_fields = ['etatSujet','personnel']
     # def get_queryset(self):
     #     user = self.request.user
     #     return Sujet.objects.filter(owner=user)

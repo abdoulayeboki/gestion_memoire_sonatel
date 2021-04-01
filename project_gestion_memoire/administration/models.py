@@ -20,13 +20,16 @@ class Personnel(models.Model):
     telephon = models.CharField(max_length=18,default=None)
     email = models.CharField(max_length=100)
     profil = models.CharField(max_length=20,
-    choices= [(tag.value, tag.value) for tag in ProfilEnumeration], default="AUTRE")
+    choices= [(tag.value, tag.value) for tag in ProfilEnumeration],default='AUTRE')
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="personnel",null=True, unique=True)
 
     class Meta:
         unique_together = [['cni'],['user']]
     def __str__(self):
         return self.nom
+    def save(self, *args, **kwargs):
+        # self.profil = 'AUTRE'
+        super().save(*args, **kwargs) 
 class Enseignent(Personnel):
     grade = models.CharField(max_length=100)
     specialite= models.CharField(max_length=100)
@@ -35,9 +38,11 @@ class Enseignent(Personnel):
     class Meta:
         ordering: ['nom']
 
-
+    def save(self, *args, **kwargs):
+        self.profil ='ENSEIGNANT'
+        super().save(*args, **kwargs) 
     def __str__(self):
-        return self.nom
+        return str(self.nom)
 class Promotion(models.Model):
     code = models.CharField(max_length=25, unique=True)
     nom = models.CharField(max_length=100, unique=True)
@@ -107,7 +112,11 @@ class Etudiant(Personnel):
     classe = models.ForeignKey(Classe, related_name="etudiants",on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.ine
+        return str(self.ine)
 
     class Meta:
         ordering: ['ine']
+    
+    def save(self, *args, **kwargs):
+        self.profil = 'ETUDIANT'
+        super().save(*args, **kwargs) 

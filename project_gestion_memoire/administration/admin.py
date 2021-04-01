@@ -1,24 +1,26 @@
 from django.contrib import admin
 
 # Register your models here.
-from administration.models import  Etudiant, Promotion,Departement,Filiere,Specialite,Classe,Enseignent
+from administration.models import  Etudiant, Promotion,Departement,Personnel,Filiere,Specialite,Classe,Enseignent
 
 class EtudiantAdmin(admin.ModelAdmin):
-     fields = (('nom', 'prenom'),('telephon','email'),('ine','classe','promotion'),('cni','profil','user'))
+     exclude = ('profil',)
+     fields = (('nom', 'prenom'),('telephon','email'),('ine','classe','promotion'),('cni','user'))
      list_display   = ('nom', 'prenom','telephon','email', 'ine','classe')
      list_filter    = ('classe','classe__specialite','classe__specialite__filiere')
      search_fields  = ('ine', 'nom', 'prenom')
 class EnseignentAdmin(admin.ModelAdmin):
+     exclude = ('profil',)
      fieldsets = (
         ("Information Personnelle", {
-            'fields': ('nom', 'prenom', 'cni','profil','user')
+            'fields': ('nom', 'prenom', 'cni','user')
         }),
         ('Information Suplémentaire', {
             'classes': ('wide ', 'extrapretty'),
             'fields': ('telephon','email','departement'),
         }),
     )
-     list_display   = ('nom', 'prenom', 'cni','telephon','email','departement')
+     list_display   = ('nom', 'prenom', 'cni','telephon','email','departement','profil')
      list_filter    = ('departement',)
      search_fields  = ('cni', 'nom', 'prenom')
 class ClasseAdmin(admin.ModelAdmin):
@@ -44,6 +46,12 @@ class PromotionAdmin(admin.ModelAdmin):
      exclude = ('code',)
      list_display   = ('code', 'nom')
      search_fields  = ('code', 'nom')
+class PersonnelAdmin(admin.ModelAdmin):
+     exclude = ('user','profil')
+     fields = (('nom', 'prenom'),('telephon','email'),('cni'))
+     list_display   = ('nom', 'prenom','telephon','email','cni','profil','user')
+admin.site.register(Personnel, PersonnelAdmin)
+
 admin.site.register(Etudiant, EtudiantAdmin)
 admin.site.register(Enseignent, EnseignentAdmin)
 admin.site.register(Classe, ClasseAdmin)
