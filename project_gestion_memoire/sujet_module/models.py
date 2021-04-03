@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.functions import Coalesce
 from administration.models import Enseignent, Etudiant, Personnel
 from django.http import Http404 , HttpResponse
+from django.core.exceptions import PermissionDenied
 # Create your models here.
 
 class EtatSujetEnumeration(Enum):   # A subclass of Enum
@@ -26,6 +27,12 @@ class Sujet(models.Model):
 
     def __str__(self):
         return self.titre
+    
+    def save(self, *args, **kwargs):
+        if not self.personnel:
+            raise PermissionDenied("Imposible! Vous n'etes pas un personnel ")
+        else:
+            super().save(*args, **kwargs)
 
 
 class SujetPostuler(models.Model):
@@ -40,10 +47,9 @@ class SujetPostuler(models.Model):
         return  self.cv
     def save(self, *args, **kwargs):
         if self.personnel.profil == self.sujet.personnel.profil:
-            raise Http404("Imposible! Vous avez le meme profile")
-            # raise  HttpResponseForbidden("Imposible! Vous avez le meme profile")
+            raise PermissionDenied("Imposible! Vous avez le meme profile")
         elif (self.personnel.profil == "AUTRE" and self.sujet.personnel.profil =="ENSEIGNANT"):
-            raise  Http404("Imposible! Vous ne pouvez pas postuler à ce sujet, car vous fetes parti de l'administration")
+            raise  PermissionDenied("Imposible! Vous ne pouvez pas postuler à ce sujet, car vous fetes parti de l'administration")
         else:
             super().save(*args, **kwargs)
 
@@ -62,6 +68,6 @@ class SujetAccorder(models.Model):
         sujet = Sujet.objects.get(pk=self.sujet.id)
         list_idPersonne = sujet.personnelPostuler.values_list("id",flat=True)
         if self.personnel.id not in list_idPersonne:
-            raise Http404("Imposible! Vous avez n'avez pas postulé à ce sujet")
+            raise PermissionDenied("Imposible! Vous avez n'avez pas postulé à ce sujet")
         else:
             super().save(*args, **kwargs)

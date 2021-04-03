@@ -6,6 +6,8 @@ telecharger les dependance à l'aide de cette commande
         env\Scripts\activate.bat
 
      pip install -r requirements.txt
+
+     pip freeze > requirements.txt : permet d'ajouter les dependance dans requirements.txt
 ------------------------------------------------------------------------------------------------------------------------
 Creer la base de donnée nommée:
      gestion_memoire

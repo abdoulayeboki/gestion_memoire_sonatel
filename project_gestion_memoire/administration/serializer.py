@@ -49,5 +49,6 @@ class EnseignentSerializer(serializers.ModelSerializer):
 class PersonnelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Personnel
-        fields = ['id', 'profil']
+        # fields = ['id', 'profil','user']
+        fields ='__all__'
 

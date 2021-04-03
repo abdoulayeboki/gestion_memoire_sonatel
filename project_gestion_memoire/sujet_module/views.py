@@ -12,6 +12,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from coreapi.auth import TokenAuthentication
+from rest_framework.exceptions import ValidationError
+from  .permissions import IsOwnerOrReadOnly
 
 # view Sujet   
 class SujetList(generics.ListCreateAPIView):
@@ -22,16 +24,24 @@ class SujetList(generics.ListCreateAPIView):
     # def get_queryset(self):
     #     user = self.request.user
     #     return Sujet.objects.filter(owner=user)
-
+    # def perform_create(self, serializer):
+    #     serializer.save(personnel=self.request.user.personnel)
     
 class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
+
+    # def  get_queryset(self):
+    #     return Sujet.objects.filter(personnel=self.request.user.personnel)
+    
 
 # view SujetPostuler   
 class SujetPostulerList(generics.ListCreateAPIView):
     queryset = SujetPostuler.objects.all()
     serializer_class = SujetPostulerSerializer
+
+
     
 class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = SujetPostuler.objects.all()

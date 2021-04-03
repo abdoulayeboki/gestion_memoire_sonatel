@@ -2,3 +2,5 @@ env/
 .metals/
 .vscode/
 null/
+
+project_gestion_memoire/administration/__pycache__/*
