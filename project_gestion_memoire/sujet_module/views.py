@@ -24,14 +24,14 @@ class SujetList(generics.ListCreateAPIView):
     # def get_queryset(self):
     #     user = self.request.user
     #     return Sujet.objects.filter(owner=user)
-    # def perform_create(self, serializer):
-    #     serializer.save(personnel=self.request.user.personnel)
+    def perform_create(self, serializer):
+        serializer.save(personnel=self.request.user.personnel)
     
 class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
-
+    
     # def  get_queryset(self):
     #     return Sujet.objects.filter(personnel=self.request.user.personnel)
     
@@ -40,8 +40,12 @@ class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
 class SujetPostulerList(generics.ListCreateAPIView):
     queryset = SujetPostuler.objects.all()
     serializer_class = SujetPostulerSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['sujet','personnel']
 
-
+    def perform_create(self, serializer):
+        serializer.save(personnel=self.request.user.personnel)
+        print(self)
     
 class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = SujetPostuler.objects.all()

@@ -4,3 +4,7 @@ env/
 null/
 
 project_gestion_memoire/administration/__pycache__/*
+project_gestion_memoire/administration/migrations/__pycache__/*
+project_gestion_memoire/project_gestion_memoire/__pycache__/*
+project_gestion_memoire/sujet_module/__pycache__/*
+project_gestion_memoire/sujet_module/migrations/__pycache__/*

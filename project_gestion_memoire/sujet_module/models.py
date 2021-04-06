@@ -21,7 +21,7 @@ class Sujet(models.Model):
     createdDate = models.DateTimeField(auto_now_add=True)
     personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE,related_name="mesSujets")
     etatSujet = models.CharField(max_length=10,
-    choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
+            choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
     personnelPostuler = models.ManyToManyField(Personnel, through='SujetPostuler',related_name="sujetsPostuler")
     personnelAccorder = models.ManyToManyField(Personnel, through='SujetAccorder',related_name="sujetsAccorder")
 
