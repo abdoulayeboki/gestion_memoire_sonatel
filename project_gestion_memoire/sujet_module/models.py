@@ -5,6 +5,8 @@ from django.db.models.functions import Coalesce
 from administration.models import Enseignent, Etudiant, Personnel
 from django.http import Http404 , HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete
 # Create your models here.
 
 class EtatSujetEnumeration(Enum):   # A subclass of Enum
@@ -65,9 +67,15 @@ class SujetAccorder(models.Model):
         return self.valide
     
     def save(self, *args, **kwargs):
-        sujet = Sujet.objects.get(pk=self.sujet.id)
-        list_idPersonne = sujet.personnelPostuler.values_list("id",flat=True)
-        if self.personnel.id not in list_idPersonne:
+        sujet = Sujet.objects.get(pk=self.sujet.id) #on recupere le sujet concerné
+        Sujet.objects.filter(pk=self.sujet.id).update(etatSujet="ACCORDE") # Mettre a jour l'état du sujet
+        list_idPersonne = sujet.personnelPostuler.values_list("id",flat=True) # on recupere les postulant
+        if self.personnel.id not in list_idPersonne:                          # on verifie si le personnel est dans la liste
             raise PermissionDenied("Imposible! Vous avez n'avez pas postulé à ce sujet")
+        # else if self.sujet.personnel.id != 
         else:
             super().save(*args, **kwargs)
+@receiver(pre_delete, sender=SujetAccorder)
+def update_etatSujet(sender, instance, **kwargs):
+    if len(SujetAccorder.objects.filter(sujet=instance.sujet.id)) <= 1:
+        Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="PROPOSE") 

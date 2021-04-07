@@ -13,7 +13,7 @@ from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from coreapi.auth import TokenAuthentication
 from rest_framework.exceptions import ValidationError
-from  .permissions import IsOwnerOrReadOnly
+from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
 
 # view Sujet   
 class SujetList(generics.ListCreateAPIView):
@@ -45,7 +45,6 @@ class SujetPostulerList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(personnel=self.request.user.personnel)
-        print(self)
     
 class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = SujetPostuler.objects.all()
@@ -55,7 +54,13 @@ class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
 class SujetAccorderList(generics.ListCreateAPIView):
     queryset = SujetAccorder.objects.all()
     serializer_class = SujetAccorderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['sujet','personnel']
+
+    # def perform_create(self, serializer):
+    #     serializer.save(sujet.etatSujet="ACCORDE")
 class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsOwnerOrReadOnlyAccorde]
     queryset = SujetAccorder.objects.all()
     serializer_class = SujetAccorderSerializer
 
