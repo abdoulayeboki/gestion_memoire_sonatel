@@ -19,8 +19,9 @@ from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
 class SujetList(generics.ListCreateAPIView):
     queryset = Sujet.objects.all()
     serializer_class = SujetSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     filterset_fields = ['etatSujet','personnel']
+    search_fields = ['titre']
     # def get_queryset(self):
     #     user = self.request.user
     #     return Sujet.objects.filter(owner=user)
@@ -60,7 +61,7 @@ class SujetAccorderList(generics.ListCreateAPIView):
     # def perform_create(self, serializer):
     #     serializer.save(sujet.etatSujet="ACCORDE")
 class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsOwnerOrReadOnlyAccorde]
+    # permission_classes = [IsOwnerOrReadOnlyAccorde]
     queryset = SujetAccorder.objects.all()
     serializer_class = SujetAccorderSerializer
 

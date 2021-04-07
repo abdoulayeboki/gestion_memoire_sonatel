@@ -75,7 +75,9 @@ class SujetAccorder(models.Model):
         # else if self.sujet.personnel.id != 
         else:
             super().save(*args, **kwargs)
+
+# écoute le signal lors de suppression d'un SujetAccorder
 @receiver(pre_delete, sender=SujetAccorder)
 def update_etatSujet(sender, instance, **kwargs):
-    if len(SujetAccorder.objects.filter(sujet=instance.sujet.id)) <= 1:
-        Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="PROPOSE") 
+    if len(SujetAccorder.objects.filter(sujet=instance.sujet.id)) <= 1:  # on verifie si le sujet n'est pas accorde à d'autre personne
+        Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="PROPOSE") # on change son état s'il n'es accorde à personne
