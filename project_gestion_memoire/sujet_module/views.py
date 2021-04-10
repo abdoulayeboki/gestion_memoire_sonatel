@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from .models import Sujet, SujetPostuler, SujetAccorder
-from .serializer import SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer
+from .models import Sujet, SujetPostuler, SujetAccorder,SujetValider
+from .serializer import SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer,SujetValiderSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from coreapi.auth import TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
+
 
 # view Sujet   
 class SujetList(generics.ListCreateAPIView):
@@ -64,5 +65,19 @@ class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsOwnerOrReadOnlyAccorde]
     queryset = SujetAccorder.objects.all()
     serializer_class = SujetAccorderSerializer
+
+# view SujetAccorder 
+class SujetValiderList(generics.ListCreateAPIView):
+    queryset = SujetValider.objects.all()
+    serializer_class = SujetValiderSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['sujet','personnel']
+
+    # def perform_create(self, serializer):
+    #     serializer.save(sujet.etatSujet="ACCORDE")
+class SujetValiderDetail(generics.RetrieveUpdateDestroyAPIView):
+    # permission_classes = [IsOwnerOrReadOnlyAccorde]
+    queryset = SujetValider.objects.all()
+    serializer_class = SujetValiderSerializer
 
 

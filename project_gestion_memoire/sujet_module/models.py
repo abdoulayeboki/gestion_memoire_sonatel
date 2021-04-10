@@ -6,7 +6,7 @@ from administration.models import Enseignent, Etudiant, Personnel
 from django.http import Http404 , HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.dispatch import receiver
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete,post_save,pre_save
 # Create your models here.
 
 class EtatSujetEnumeration(Enum):   # A subclass of Enum
@@ -26,6 +26,7 @@ class Sujet(models.Model):
             choices= [(tag.value, tag.value) for tag in EtatSujetEnumeration], default="PROPOSE")
     personnelPostuler = models.ManyToManyField(Personnel, through='SujetPostuler',related_name="sujetsPostuler")
     personnelAccorder = models.ManyToManyField(Personnel, through='SujetAccorder',related_name="sujetsAccorder")
+    personnelValider = models.ManyToManyField(Personnel, through='SujetValider')
 
     def __str__(self):
         return self.titre
@@ -76,8 +77,54 @@ class SujetAccorder(models.Model):
         else:
             super().save(*args, **kwargs)
 
+
+class SujetValider(models.Model):
+    dateValider = models.DateTimeField(auto_now_add=True)
+    sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together =['sujet','personnel']
+    # def __str__(self):
+    #     return self.sujet
+    
+    def save(self, *args, **kwargs):
+        sujet = Sujet.objects.get(pk=self.sujet.id) #on recupere le sujet concerné
+        Sujet.objects.filter(pk=self.sujet.id).update(etatSujet="VALIDE") # Mettre a jour l'état du sujet
+        list_idPersonne = sujet.personnelAccorder.values_list("id",flat=True) # on recupere les personnes accordees
+        if self.personnel.id not in list_idPersonne:                          # on verifie si le personnel est dans la liste
+            raise PermissionDenied("Imposible! Vous avez n'etes pas accordé à ce sujet")
+        if len(SujetValider.objects.filter(personnel__id=self.personnel.id,personnel__profil="ETUDIANT")) > 0:
+            raise PermissionDenied("Imposible!, l'etudiant a déjà n sujet valide")
+        # else if self.sujet.personnel.id != 
+        else:
+            super().save(*args, **kwargs)
+
+
 # écoute le signal lors de suppression d'un SujetAccorder
 @receiver(pre_delete, sender=SujetAccorder)
 def update_etatSujet(sender, instance, **kwargs):
     if len(SujetAccorder.objects.filter(sujet=instance.sujet.id)) <= 1:  # on verifie si le sujet n'est pas accorde à d'autre personne
         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="PROPOSE") # on change son état s'il n'es accorde à personne
+
+# @receiver(post_save, sender=SujetAccorder)
+# def update_etatSujetOnValide(sender, instance, **kwargs):
+#         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="VALIDE")
+
+@receiver(pre_save, sender=SujetAccorder)
+def pre_save_SujetAccorder(sender, instance, **kwargs): 
+        if not instance._state.adding: # s'il s'agit d'un update
+            if len(SujetAccorder.objects.filter(personnel=instance.personnel.id,personnel__profil="ETUDIANT",valide=True)) > 0:
+                print(instance.personnel.id)
+                # if instance.sujet.etatSujet=="VALIDE":
+                #         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="ACCORDE")
+                # elif instance.sujet.etatSujet=="ACCORDE":
+                #     Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="VALIDE")
+                raise Http404("Imposible! l'etudiant a déjà un sujet validé")
+            else:
+                if instance.sujet.etatSujet=="VALIDE":
+                    Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="ACCORDE")
+                elif instance.sujet.etatSujet=="ACCORDE":
+                    Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="VALIDE")
+        else: # s'il s'agit d'une insertion
+            pass
