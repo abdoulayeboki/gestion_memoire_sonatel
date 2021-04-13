@@ -1,9 +1,11 @@
 from django.shortcuts import render
 
 from .models import Sujet, SujetPostuler, SujetAccorder,SujetValider
-from .serializer import SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer,SujetValiderSerializer
+from .serializer import (SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer,
+SujetValiderSerializer)
 from rest_framework import generics
 from django.contrib.auth.models import User
+from administration.serializer import PersonnelSerializer
 
 from rest_framework.decorators import api_view # new
 from rest_framework.response import Response # new
@@ -14,6 +16,9 @@ from rest_framework.permissions import IsAuthenticated
 from coreapi.auth import TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
+from rest_framework.views import APIView
+from django.http import Http404
+
 
 
 # view Sujet   
@@ -38,7 +43,7 @@ class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
     #     return Sujet.objects.filter(personnel=self.request.user.personnel)
     
 
-# view SujetPostuler   
+# view SujetPostuler
 class SujetPostulerList(generics.ListCreateAPIView):
     queryset = SujetPostuler.objects.all()
     serializer_class = SujetPostulerSerializer

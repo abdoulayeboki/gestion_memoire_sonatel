@@ -9,10 +9,12 @@ class SujetSerializer(serializers.ModelSerializer):
     personnel = PersonnelSerializer(read_only=True)
     personnelPostuler = PersonnelSerializer(many=True,read_only=True)
     personnelAccorder = PersonnelSerializer(many=True,read_only=True)
+    personnelValider = PersonnelSerializer(many=True,read_only=True)
     class Meta:
         model = Sujet
         # fields = '__all__'
-        fields = ('id','titre','description','etatSujet','createdDate','createdDate','personnel','personnelPostuler','personnelAccorder')
+        fields = ('id','titre','description','etatSujet','createdDate','createdDate','personnel','personnelPostuler','personnelAccorder','personnelValider')
+
 
 class SujetPostulerSerializer(serializers.ModelSerializer):
     personnel = PersonnelSerializer(read_only=True)
