@@ -75,8 +75,6 @@ class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
 class SujetValiderList(generics.ListCreateAPIView):
     queryset = SujetValider.objects.all()
     serializer_class = SujetValiderSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['sujet','personnel']
 
     # def perform_create(self, serializer):
     #     serializer.save(sujet.etatSujet="ACCORDE")

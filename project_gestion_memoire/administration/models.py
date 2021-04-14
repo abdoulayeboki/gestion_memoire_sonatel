@@ -22,6 +22,7 @@ class Personnel(models.Model):
     profil = models.CharField(max_length=20,
     choices= [(tag.value, tag.value) for tag in ProfilEnumeration],default='AUTRE')
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="personnel",null=True, unique=True)
+    nbr_sujet_valide = models.IntegerField(default=0)
 
     class Meta:
         unique_together = [['cni'],['user']]
@@ -110,7 +111,7 @@ class Etudiant(Personnel):
     ine = models.CharField(max_length=7, unique=True)
     promotion = models.ForeignKey(Promotion, related_name="etudiants",on_delete=models.CASCADE)
     classe = models.ForeignKey(Classe, related_name="etudiants",on_delete=models.CASCADE, default=None)
-
+   
     def __str__(self):
         return str(self.ine)
 

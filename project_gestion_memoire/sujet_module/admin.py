@@ -16,5 +16,5 @@ class SujetPostulerAdmin(admin.ModelAdmin):
 admin.site.register(SujetPostuler, SujetPostulerAdmin)
 
 class SujetAccorderAdmin(admin.ModelAdmin):
-    list_display   = ('dateAccorde','valide','sujet','personnel')
+    list_display   = ('dateAccorde','sujet','personnel')
 admin.site.register(SujetAccorder, SujetAccorderAdmin)

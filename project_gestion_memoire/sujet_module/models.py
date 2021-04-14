@@ -49,6 +49,11 @@ class SujetPostuler(models.Model):
     def __str__(self):
         return  self.cv
     def save(self, *args, **kwargs):
+        # on verifie si l'etudiant n'a pas un sujet valide
+        if self.personnel.profil == "ETUDIANT":
+            if len(SujetValider.objects.filter(personnel =self.personnel.id)) > 0:
+                raise PermissionDenied("Imposible! vous ne pouvez pas postuler à ce sujet, car vous avez un sujet valide")
+
         if self.personnel.profil == self.sujet.personnel.profil:
             raise PermissionDenied("Imposible! Vous avez le meme profile")
         elif (self.personnel.profil == "AUTRE" and self.sujet.personnel.profil =="ENSEIGNANT"):
@@ -58,7 +63,6 @@ class SujetPostuler(models.Model):
 
 class SujetAccorder(models.Model):
     dateAccorde = models.DateTimeField(auto_now_add=True)
-    valide = models.BooleanField(default=False)
     sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
     personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE)
 
@@ -91,6 +95,7 @@ class SujetValider(models.Model):
     def save(self, *args, **kwargs):
         sujet = Sujet.objects.get(pk=self.sujet.id) #on recupere le sujet concerné
         Sujet.objects.filter(pk=self.sujet.id).update(etatSujet="VALIDE") # Mettre a jour l'état du sujet
+        Personnel.objects.filter(pk=self.personnel.id).update(nbr_sujet_valide=(self.personnel.nbr_sujet_valide +1))
         list_idPersonne = sujet.personnelAccorder.values_list("id",flat=True) # on recupere les personnes accordees
         if self.personnel.id not in list_idPersonne:                          # on verifie si le personnel est dans la liste
             raise PermissionDenied("Imposible! Vous avez n'etes pas accordé à ce sujet")
@@ -107,19 +112,11 @@ def update_etatSujet(sender, instance, **kwargs):
     if len(SujetAccorder.objects.filter(sujet=instance.sujet.id)) <= 1:  # on verifie si le sujet n'est pas accorde à d'autre personne
         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="PROPOSE") # on change son état s'il n'es accorde à personne
 
-# @receiver(post_save, sender=SujetAccorder)
-# def update_etatSujetOnValide(sender, instance, **kwargs):
-#         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="VALIDE")
 
 @receiver(pre_save, sender=SujetAccorder)
 def pre_save_SujetAccorder(sender, instance, **kwargs): 
         if not instance._state.adding: # s'il s'agit d'un update
             if len(SujetAccorder.objects.filter(personnel=instance.personnel.id,personnel__profil="ETUDIANT",valide=True)) > 0:
-                print(instance.personnel.id)
-                # if instance.sujet.etatSujet=="VALIDE":
-                #         Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="ACCORDE")
-                # elif instance.sujet.etatSujet=="ACCORDE":
-                #     Sujet.objects.filter(pk=instance.sujet.id).update(etatSujet="VALIDE")
                 raise Http404("Imposible! l'etudiant a déjà un sujet validé")
             else:
                 if instance.sujet.etatSujet=="VALIDE":
