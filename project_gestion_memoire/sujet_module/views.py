@@ -1,11 +1,12 @@
 from django.shortcuts import render
 
-from .models import Sujet, SujetPostuler, SujetAccorder,SujetValider
+from .models import Sujet, SujetPostuler, SujetAccorder,SujetValider,SujetPostuler
 from .serializer import (SujetSerializer,SujetAccorderSerializer,SujetPostulerSerializer,
 SujetValiderSerializer)
 from rest_framework import generics
 from django.contrib.auth.models import User
 from administration.serializer import PersonnelSerializer
+from rest_framework.parsers import FileUploadParser, FormParser
 
 from rest_framework.decorators import api_view # new
 from rest_framework.response import Response # new
@@ -17,7 +18,9 @@ from coreapi.auth import TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
 from rest_framework.views import APIView
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from rest_framework import status
+from django.http.multipartparser import MultiPartParser
 
 
 
@@ -52,6 +55,18 @@ class SujetPostulerList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(personnel=self.request.user.personnel)
+    
+    
+    # def post(self, request, format=None):
+    #     file_serializer = SujetPostulerSerializer(data=request.data)
+
+    #     if file_serializer.is_valid():
+    #         file_serializer.save()
+    #         return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+    #     else:
+    #         return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
     
 class SujetPostulerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = SujetPostuler.objects.all()

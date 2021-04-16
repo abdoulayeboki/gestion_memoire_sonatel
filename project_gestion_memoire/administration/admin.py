@@ -47,8 +47,8 @@ class PromotionAdmin(admin.ModelAdmin):
      list_display   = ('code', 'nom')
      search_fields  = ('code', 'nom')
 class PersonnelAdmin(admin.ModelAdmin):
-     exclude = ('user','profil')
-     fields = (('nom', 'prenom'),('telephon','email'),('cni'))
+     exclude = ('profil',)
+     fields = (('nom', 'prenom'),('telephon','email'),('cni','user'))
      list_display   = ('nom', 'prenom','telephon','email','cni','profil','user')
 admin.site.register(Personnel, PersonnelAdmin)
 

@@ -12,7 +12,7 @@ class SujetAdmin(admin.ModelAdmin):
 admin.site.register(Sujet, SujetAdmin)
 
 class SujetPostulerAdmin(admin.ModelAdmin):
-    list_display   = ('motivation', 'cv','datePostuler','personnel','sujet')
+    list_display   = ('motivation', 'file_cv','datePostuler','personnel','sujet')
 admin.site.register(SujetPostuler, SujetPostulerAdmin)
 
 class SujetAccorderAdmin(admin.ModelAdmin):

@@ -20,7 +20,7 @@ class SujetPostulerSerializer(serializers.ModelSerializer):
     personnel = PersonnelSerializer(read_only=True)
     class Meta:
         model = SujetPostuler
-        fields = ('motivation','cv','sujet','personnel') 
+        fields = '__all__' #('motivation','cv','sujet','personnel','file') 
 
 
 class SujetAccorderSerializer(serializers.ModelSerializer):
