@@ -11,6 +11,9 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from .views import UserDetail, UserList
+from . import settings
+from django.conf.urls.static import static
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -32,3 +35,8 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
 ]
+
+
+# pour afficher des images
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

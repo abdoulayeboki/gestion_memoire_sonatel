@@ -38,12 +38,14 @@ class Sujet(models.Model):
             super().save(*args, **kwargs)
 
 
+def upload_path(instance, filename):
+    return '/'.join(['file',str(instance.sujet.id),str(instance.personnel.id), filename])
 class SujetPostuler(models.Model):
     datePostuler = models.DateTimeField(auto_now_add=True)
     motivation = models.TextField()
-    cv = models.CharField(max_length=255)
     personnel = models.ForeignKey(Personnel,on_delete=models.CASCADE)
     sujet = models.ForeignKey(Sujet,on_delete=models.CASCADE)
+    file_cv = models.FileField(blank=True, null=True, upload_to=upload_path) 
     class Meta:
         unique_together =['personnel','sujet']
     def __str__(self):
@@ -51,7 +53,7 @@ class SujetPostuler(models.Model):
     def save(self, *args, **kwargs):
         # on verifie si l'etudiant n'a pas un sujet valide
         if self.personnel.profil == "ETUDIANT":
-            if len(SujetValider.objects.filter(personnel =self.personnel.id)) > 0:
+            if len(SujetValider.objects.filter(personnel=self.personnel.id)) > 0:
                 raise PermissionDenied("Imposible! vous ne pouvez pas postuler à ce sujet, car vous avez un sujet valide")
 
         if self.personnel.profil == self.sujet.personnel.profil:
