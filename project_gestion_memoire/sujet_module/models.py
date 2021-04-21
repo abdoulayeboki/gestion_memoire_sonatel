@@ -96,16 +96,20 @@ class SujetValider(models.Model):
     
     def save(self, *args, **kwargs):
         sujet = Sujet.objects.get(pk=self.sujet.id) #on recupere le sujet concerné
-        Sujet.objects.filter(pk=self.sujet.id).update(etatSujet="VALIDE") # Mettre a jour l'état du sujet
-        Personnel.objects.filter(pk=self.personnel.id).update(nbr_sujet_valide=(self.personnel.nbr_sujet_valide +1))
         list_idPersonne = sujet.personnelAccorder.values_list("id",flat=True) # on recupere les personnes accordees
         if self.personnel.id not in list_idPersonne:                          # on verifie si le personnel est dans la liste
             raise PermissionDenied("Imposible! Vous avez n'etes pas accordé à ce sujet")
         if len(SujetValider.objects.filter(personnel__id=self.personnel.id,personnel__profil="ETUDIANT")) > 0:
             raise PermissionDenied("Imposible!, l'etudiant a déjà n sujet valide")
+        # if len(SujetValider.objects.filter(sujet__personnel__id=self.sujet.personnel.id,sujet__personnel__profil="ETUDIANT")) > 0:
+        #     print("etudiant a un sujet")
+        #     raise PermissionDenied("Imposible!, l'etudiant a déjà n sujet valide")
         # else if self.sujet.personnel.id != 
-        else:
-            super().save(*args, **kwargs)
+        Sujet.objects.filter(pk=self.sujet.id).update(etatSujet="VALIDE") # Mettre a jour l'état du sujet
+        Personnel.objects.filter(pk=self.personnel.id).update(nbr_sujet_valide=(self.personnel.nbr_sujet_valide +1))
+        Personnel.objects.filter(pk=self.sujet.personnel.id).update(nbr_sujet_valide=(self.sujet.personnel.nbr_sujet_valide +1))
+    
+        super().save(*args, **kwargs)
 
 
 # écoute le signal lors de suppression d'un SujetAccorder
