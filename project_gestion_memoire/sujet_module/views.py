@@ -16,7 +16,7 @@ from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from coreapi.auth import TokenAuthentication
 from rest_framework.exceptions import ValidationError
-from  .permissions import IsOwnerOrReadOnly,IsOwnerOrReadOnlyAccorde
+from  .permissions import IsOwnerOrReadOnly,IsEncadreur
 from rest_framework.views import APIView
 from django.http import Http404, HttpResponse
 from rest_framework import status
@@ -44,7 +44,10 @@ class SujetDetail(generics.RetrieveUpdateDestroyAPIView):
     
     # def  get_queryset(self):
     #     return Sujet.objects.filter(personnel=self.request.user.personnel)
-    
+class SujetTermine(generics.UpdateAPIView):
+    permission_classes = [IsEncadreur]
+    queryset = Sujet.objects.all()
+    serializer_class = SujetSerializer    
 
 # view SujetPostuler
 class SujetPostulerList(generics.ListCreateAPIView):
@@ -82,7 +85,7 @@ class SujetAccorderList(generics.ListCreateAPIView):
     # def perform_create(self, serializer):
     #     serializer.save(sujet.etatSujet="ACCORDE")
 class SujetAccorderDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsOwnerOrReadOnlyAccorde]
+    # permission_classes = []
     queryset = SujetAccorder.objects.all()
     serializer_class = SujetAccorderSerializer
 
@@ -94,7 +97,7 @@ class SujetValiderList(generics.ListCreateAPIView):
     # def perform_create(self, serializer):
     #     serializer.save(sujet.etatSujet="ACCORDE")
 class SujetValiderDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsOwnerOrReadOnlyAccorde]
+    # permission_classes = []
     queryset = SujetValider.objects.all()
     serializer_class = SujetValiderSerializer
 
