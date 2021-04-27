@@ -26,6 +26,7 @@ urlpatterns = [
     path('users/', UserList.as_view()), # new
     path('users/<int:pk>/', UserDetail.as_view()), 
     path('administration/', include('administration.urls')),
+    path('encadrements/', include('encadrement.urls')),
     path('', include('sujet_module.urls')),
     path('admin/', admin.site.urls),
     path('api-token-auth/', views.obtain_auth_token),
