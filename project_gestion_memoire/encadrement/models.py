@@ -1,5 +1,5 @@
 from django.db import models
-# from administration.models import  Personnel
+from administration.models import  Personnel
 from sujet_module.models import Sujet
 from django.core.exceptions import PermissionDenied
 from django.dispatch import receiver
@@ -25,6 +25,8 @@ class Evenement(models.Model):
     description = models.TextField()
     dateEvenement = models.DateTimeField()
     encadrement = models.ForeignKey(Encadrement,on_delete=models.CASCADE, related_name="evenements")
+    owner = models.ForeignKey(Personnel,on_delete=models.CASCADE, related_name="evenements")
+
 
 def upload_path(instance, filename):
     return '/'.join(['ressource',str(instance.encadrement.id), filename])
@@ -33,3 +35,4 @@ class Ressource(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     file = models.FileField(blank=True, null=True, upload_to=upload_path) 
     encadrement = models.ForeignKey(Encadrement,on_delete=models.CASCADE, related_name="ressources")
+    owner = models.ForeignKey(Personnel,on_delete=models.CASCADE, related_name="ressources")

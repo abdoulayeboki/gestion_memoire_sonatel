@@ -12,5 +12,8 @@ project_gestion_memoire/sujet_module/migrations/__pycache__/*
 project_gestion_memoire/project_gestion_memoire/__pycache__/settings.cpython-38.pyc
 */__pycache__/*
 
+
 media/
 media/*
+
+project_gestion_memoire/media/*
