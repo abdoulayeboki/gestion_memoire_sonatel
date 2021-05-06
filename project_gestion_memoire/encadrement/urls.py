@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import ( EncadrementList,EncadrementDetail,RessourceList,RessourceDetail, EvenementList,EvenementDetail)
+from .views import ( EncadrementList,EncadrementDetail,EncadrementCreate,RessourceList,RessourceDetail, EvenementList,EvenementDetail)
 
 urlpatterns = [
     path('', EncadrementList.as_view(), name='encadrements_list'),
+    path('create/', EncadrementCreate.as_view(), name='encadrements_list'),
     path('<int:pk>/', EncadrementDetail.as_view(), name='encadrements_detail'),
     path('ressources', RessourceList.as_view(), name='ressources_list'),
     path('ressources/<int:pk>/', RessourceDetail.as_view(), name='ressources_detail'),

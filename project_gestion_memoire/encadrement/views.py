@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from .models import Encadrement,Evenement,Ressource
-from .serializer import EncadrementSerializer,EvenementSerializer,RessourceSerializer
+from .serializer import EncadrementSerializer,EvenementSerializer,RessourceSerializer,EncadrementSerializerList
 from .permissions import  IntegrityPermission
 
 from rest_framework import generics
 # Create your views here.
-class EncadrementList(generics.ListCreateAPIView):
+class EncadrementCreate(generics.CreateAPIView):
     queryset = Encadrement.objects.all()
     serializer_class = EncadrementSerializer
+class EncadrementList(generics.ListAPIView):
+    queryset = Encadrement.objects.all()
+    serializer_class = EncadrementSerializerList
 
 class EncadrementDetail(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = [IntegrityPermission]
